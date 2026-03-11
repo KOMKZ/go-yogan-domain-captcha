@@ -87,19 +87,19 @@ func (s *CaptchaService) Verify(ctx context.Context, input VerifyInput) error {
 	}
 
 	if s.config.Enabled {
-		if !success {
-			s.logger.WarnCtx(ctx, "captcha verify failed",
-				zap.String("scene", input.Scene),
-				zap.Error(verifyErr),
-			)
-			return captchaerrors.ErrCaptchaVerifyFailed
-		}
 		if verifyErr != nil {
 			s.logger.WarnCtx(ctx, "captcha verify error",
 				zap.String("scene", input.Scene),
 				zap.Error(verifyErr),
 			)
 			return captchaerrors.ErrCaptchaServiceUnavailable
+		}
+		if !success {
+			s.logger.WarnCtx(ctx, "captcha verify failed",
+				zap.String("scene", input.Scene),
+				zap.Error(verifyErr),
+			)
+			return captchaerrors.ErrCaptchaVerifyFailed
 		}
 	}
 
